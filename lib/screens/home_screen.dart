@@ -17,14 +17,17 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Movie> _popularMovies = [];
 
   Future<void> _loadMovies() async {
-    final List<Map<String, dynamic>> allMoviesData = await _apiServices.getAllMovies();
-    final List<Map<String, dynamic>> trendingMoviesData = await _apiServices.getTrendingMovies();
-    final List<Map<String, dynamic>> popularMoviesData = await _apiServices.getPopularMovies();
+    final movies = await _apiServices.getAllMovies();
+    final trending = await _apiServices.getTrendingMovies();
+    final popular = await _apiServices.getPopularMovies();
+
+
+
 
     setState(() {
-      _allMovies = allMoviesData.map((e) => Movie.fromJson(e)).toList();
-    _trendingMovies = trendingMoviesData.map((e) => Movie.fromJson(e)).toList();
-    _popularMovies = popularMoviesData.map((e) => Movie.fromJson(e)).toList();
+      _allMovies = movies;
+    _trendingMovies = trending;
+    _popularMovies = popular;
     });
   }
 
@@ -69,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(padding: EdgeInsets.all(8.0),child: Column(
             children: [
               Image.network('https://image.tmdb.org/t/p/w500${movie.posterPath}',height: 150,
-              width: 150,
+              width: 120,
               fit: BoxFit.cover,),
               SizedBox(height: 5,),
               Text(movie.title.length > 14
@@ -89,4 +92,3 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 }
 }
-
