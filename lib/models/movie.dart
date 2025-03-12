@@ -1,4 +1,4 @@
-class Movie{
+class Movie {
   final int id;
   final String title;
   final String overview;
@@ -6,26 +6,44 @@ class Movie{
   final String backdropPath;
   final String releaseDate;
   final double voteAverage;
+  final double voteCount;
 
-  Movie({required this.id, 
-  required this.title, 
-  required this.overview, 
-  required this.posterPath, 
-  required this.backdropPath,
-  required this.releaseDate, 
-  required this.voteAverage});
+  Movie({
+    required this.id,
+    required this.title,
+    required this.overview,
+    required this.posterPath,
+    required this.backdropPath,
+    required this.releaseDate,
+    required this.voteAverage,
+    required this.voteCount,
+  });
 
+  // Convert a Movie object into a JSON-compatible map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'overview': overview,
+      'poster_path': posterPath,
+      'backdrop_path': backdropPath,
+      'release_date': releaseDate,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+    };
+  }
 
-factory Movie.fromJson(Map<String, dynamic> json){
-  return Movie(
-    id: json['id'],
-    title: json['title'],
-    overview: json['overview'],
-    posterPath: json['poster_path'],
-    backdropPath: json['backdrop_path'],
-    releaseDate: json['release_date'],
-    voteAverage: json['vote_average']
-
-  );
-}
+  // Factory constructor to create a Movie object from a JSON map
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      overview: json['overview'] ?? '',
+      posterPath: json['poster_path'] ?? '',
+      backdropPath: json['backdrop_path'] ?? '',
+      releaseDate: json['release_date'] ?? '',
+      voteAverage: (json['vote_average'] ?? 0.0).toDouble(),
+      voteCount: (json['vote_count'] ?? 0.0).toDouble(),
+    );
+  }
 }
