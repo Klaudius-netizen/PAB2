@@ -113,7 +113,7 @@ final List<Movie> searchData = searchJson.map((json) => Movie.fromJson(json)).to
                 final movie = _searchResults[index];
                 return ListTile(
                   leading: CachedNetworkImage(
-                  imageUrl: movie.posterPath != ''
+                  imageUrl: (movie.posterPath.isNotEmpty)
                   ? 'https://image.tmdb.org/t/p/w500/${movie.posterPath}'
                   : 'https://placehold.co/50x75?text=No+Image', // Fallback URL
                   placeholder: (context, url) => CircularProgressIndicator(), // Loading indicator

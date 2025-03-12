@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pilem/models/movie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -144,12 +145,18 @@ class _MovieDetailScreenState extends State<DetailScreen> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              'https://image.tmdb.org/t/p/w500${widget.movie.posterPath}',
-                              height: 150,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            ),
+                            child: 
+                            CachedNetworkImage(imageUrl: (widget.movie.posterPath.isNotEmpty)
+                                                ? 'https://image.tmdb.org/t/p/w500${widget.movie.posterPath}'
+                                                : 'https://placehold.co/50x75?text=No+Image', // Fallback URL
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(),
+                              ), // Loading indicator
+                            errorWidget: (context, url, error) => Icon(Icons.error), // Error widget
+                            width: 50, // Adjust width as needed
+                            height: 75, // Adjust height as needed
+                            fit: BoxFit.cover, // Adjust image fit)
+                           ),
                           ),
                         ),
                         const SizedBox(width: 16),
