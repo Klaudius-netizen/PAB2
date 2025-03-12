@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pilem/models/movie.dart';
 import 'package:pilem/screens/detail_screen.dart';
 import 'package:pilem/services/api_service.dart';
@@ -104,29 +105,35 @@ final List<Movie> searchData = searchJson.map((json) => Movie.fromJson(json)).to
               const Center(child: CircularProgressIndicator(color: Colors.blue)),
 
             // Search results list
+
             Expanded(
               child: ListView.builder(
-                itemCount: _searchResults.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final movie = _searchResults[index];
-                  return ListTile(
-                    leading: Image.network(
-                      movie.posterPath != ''
-                      ? 'https://image.tmdb.org/t/p/w500/${movie.posterPath}'
-                      : 'https://placehold.co/50x75?text=No+Image',
-                    ),
-                    title: Text(movie.title),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailScreen(movie: movie),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+               itemCount: _searchResults.length,
+               itemBuilder: (BuildContext context, int index) {
+                final movie = _searchResults[index];
+                return ListTile(
+                  leading: CachedNetworkImage(
+                  imageUrl: movie.posterPath != ''
+                  ? 'https://image.tmdb.org/t/p/w500/${movie.posterPath}'
+                  : 'https://placehold.co/50x75?text=No+Image', // Fallback URL
+                  placeholder: (context, url) => CircularProgressIndicator(), // Loading indicator
+                  errorWidget: (context, url, error) => Icon(Icons.error), // Error widget
+                  width: 50, // Adjust width as needed
+                  height: 75, // Adjust height as needed
+                  fit: BoxFit.cover, // Adjust image fit
+          ),
+            title: Text(movie.title),
+            onTap: () {
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailScreen(movie: movie),
+                     ),
+                   );
+                 },
+                );
+              },
+             ),
             ),
           ],
         ),
